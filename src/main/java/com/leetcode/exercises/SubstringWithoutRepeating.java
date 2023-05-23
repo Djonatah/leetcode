@@ -45,9 +45,14 @@ public class SubstringWithoutRepeating {
         Map<Character, Integer> map = new HashMap<>();
         for(int i = 0 ; i < s.length() ; i++){
             char c = s.charAt(i);
+            // check if current char is greater or equal to  previous left
+            // if so, this ia a subsequence breaker
             if(map.containsKey(c) && map.get(c) >= left){
+                // calculate current sequence size
                 int sequence = i - left;
+                // stores the highest sequence
                 highest = Math.max(highest, sequence);
+                // stores the new left position
                 int previous = map.get(c);
                 previous = left > previous  ? i : previous + 1;
                 left = previous;
