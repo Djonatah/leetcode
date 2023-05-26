@@ -90,9 +90,38 @@ public class MedianTwoSortedArrays {
 
 
     // optmization done using binary search on arrays to achieve a OLOG(MIN(N,M)) algorithm
-//    public double findMedianSortedArraysOptmized(int[] nums1, int[] nums2) {
-//        if(nums1.length < nums2.length)
-//            return  findMedianSortedArraysOptmized(nums2, nums1);
-//    }
+    public double findMedianSortedArraysOptmized(int[] nums1, int[] nums2) {
+
+        // swap so the largest array comes first
+        if(nums1.length < nums2.length)
+            return  findMedianSortedArraysOptmized(nums2, nums1);
+
+        boolean even = (nums1.length + nums2.length) % 2 == 0;
+
+        int maxLeft1, maxLeft2, minRight1, minRight2;
+        int left = 0;
+        int right = nums1.length;
+
+        while(left < right){
+            int mid1 = left + right / 2;
+            int mid2 =( (nums1.length + nums2.length + 1) / 2) - mid1;
+            minRight1 = mid1 == nums1.length ? Integer.MAX_VALUE : nums1[mid1];
+            maxLeft1 = mid1 == 0 ? Integer.MIN_VALUE : nums1[mid1 - 1];
+            minRight2 = mid2 == nums2.length ? Integer.MAX_VALUE : nums2[mid2];
+            maxLeft2 = mid2 == 0 ? Integer.MIN_VALUE : nums2[mid2 - 1];
+            if(maxLeft1 <= minRight2 && maxLeft2 <= minRight1){
+                if(even)
+                    return (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2;
+                else
+                    return Math.min(minRight1, minRight2);
+            }
+            if(maxLeft1>minRight2)
+                right = mid1 - 1;
+            else
+                left = mid1 + 1;
+        }
+
+        return 0.0;
+    }
 
 }
